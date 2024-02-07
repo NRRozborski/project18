@@ -23,9 +23,13 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private Integer rating;
 
-    @OneToMany(mappedBy="User")
-    private List<Product> products;
+    @OneToMany(mappedBy = "User")
+    private List<Product> pastProducts;
+
+    @OneToMany(mappedBy = "User")
+    private List<Product> activeProducts;
 
 
     @Override
