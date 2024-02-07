@@ -36,8 +36,8 @@ public class SecurityConfig {
                 )
                 .userDetailsService(userDetailsService())
                 .sessionManagement(session ->  session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .oauth2Login(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
                 .build();
     }
 

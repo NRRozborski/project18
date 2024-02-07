@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy="User")
+    @OneToMany(mappedBy = "user")
     private List<Product> products;
 
 

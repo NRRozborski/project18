@@ -19,7 +19,8 @@ public class CategoryMapper {
         return new Category(
                 0L,
                 categoryRequestDTO.getName(),
-                categoryRequestDTO.getDescription()
+                categoryRequestDTO.getDescription(),
+                null
         );
     }
 }
