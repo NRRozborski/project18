@@ -21,6 +21,9 @@ public class SecurityConfig {
 
     private final UserRepository userRepository;
 
+    //TODO:
+    // Implementar OAUTH2 - https://www.danvega.dev/blog/spring-security-oauth2-login
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -34,7 +37,7 @@ public class SecurityConfig {
                 .userDetailsService(userDetailsService())
                 .sessionManagement(session ->  session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-//                .oauth2Login(Customizer)
+                .oauth2Login(Customizer.withDefaults())
                 .build();
     }
 
