@@ -8,8 +8,10 @@ plugins {
 group = 'com.laguna.project18'
 version = '0.0.1-SNAPSHOT'
 
+
+
 java {
-	sourceCompatibility = '19'
+	sourceCompatibility = '21'
 }
 
 configurations {
@@ -28,6 +30,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
+	compileOnly ('com.github.javafaker:javafaker:0.14') { exclude module: 'snakeyaml' }
+	implementation group: 'org.yaml', name: 'snakeyaml', version: '2.0'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -38,3 +42,5 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
