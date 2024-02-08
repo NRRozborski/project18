@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UserRepository userRepository;
+//    private final AuthenticationFilter authenticationFilter;
 
     //TODO:
     // Implementar OAUTH2 - https://www.danvega.dev/blog/spring-security-oauth2-login
@@ -30,13 +30,15 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/category/all").permitAll()
+                        .requestMatchers("/").permitAll()
+//                        .requestMatchers("/category/all").permitAll()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService())
-                .sessionManagement(session ->  session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2Login(Customizer.withDefaults())
+//                .sessionManagement(session ->  session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(customizer -> customizer
+                        .defaultSuccessUrl("/auth/login-success", true))
                 .formLogin(Customizer.withDefaults())
                 .build();
     }
@@ -45,6 +47,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(){
         return new UserDetailService(userRepository);
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
