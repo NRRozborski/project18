@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,10 +27,11 @@ public class User implements UserDetails {
     private String password;
     private Integer rating;
 
-    @OneToMany(mappedBy = "User")
+    @OneToMany(mappedBy = "user")
+    @OnDelete(action = "")
     private List<Product> pastProducts;
 
-    @OneToMany(mappedBy = "User")
+    @OneToMany(mappedBy = "user")
     private List<Product> activeProducts;
 
 
