@@ -27,12 +27,9 @@ public class User implements UserDetails {
     private String password;
     private Integer rating;
 
-    @OneToMany(mappedBy = "user")
-    @OnDelete(action = "")
-    private List<Product> pastProducts;
 
     @OneToMany(mappedBy = "user")
-    private List<Product> activeProducts;
+    private List<Product> products;
 
 
     @Override
