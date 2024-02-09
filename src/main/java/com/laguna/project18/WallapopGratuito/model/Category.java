@@ -13,11 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
 
-    @OneToMany(mappedBy="Category")
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
 }
