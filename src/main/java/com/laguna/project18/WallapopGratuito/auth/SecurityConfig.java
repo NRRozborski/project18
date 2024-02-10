@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,10 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UserRepository userRepository;
-//    private final AuthenticationFilter authenticationFilter;
-
-    //TODO:
-    // Implementar OAUTH2 - https://www.danvega.dev/blog/spring-security-oauth2-login
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,16 +27,15 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/").permitAll()
+//                        .requestMatchers("/callback").permitAll()
+//                                .requestMatchers("/oauth2/authorization/google").permitAll()
 //                        .requestMatchers("/category/all").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .userDetailsService(userDetailsService())
-//                .sessionManagement(session ->  session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session ->  session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(customizer -> customizer
-                        .defaultSuccessUrl("/auth/login-success", true))
-                .formLogin(Customizer.withDefaults())
+                .oauth2Login(config -> config.redirectionEndpoint(conf -> conf.baseUri("http://localhost/callback")))
                 .build();
     }
 
