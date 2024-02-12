@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Data
@@ -31,5 +32,7 @@ public class Product {
     @JoinColumn(name="category_id", nullable = false)
     private Category category;
 
+    @ManyToMany
+    private Set<Tag> tags;
 
 }

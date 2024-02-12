@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -20,6 +21,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
     private String username;
     @Column(unique = true, nullable = false)
@@ -28,8 +30,11 @@ public class User implements UserDetails {
     private Integer rating;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user_")
     private List<Product> products;
+
+    @OneToMany(mappedBy = "user_")
+    private Set<TagCounter> tagCounters;
 
 
     @Override
