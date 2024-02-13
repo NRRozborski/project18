@@ -16,11 +16,12 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
     private Long id;
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "tag")
     private Set<TagCounter> tagCounters;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "tags")
     private Set<Product> products;
 }

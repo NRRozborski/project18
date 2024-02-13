@@ -8,14 +8,12 @@ import java.io.Serializable;
 
 @Embeddable
 @EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class TagCounterKey implements Serializable {
     @Column(name = "user_id")
-    private Long studentId;
+    Long userId;
 
     @Column(name = "tag_id")
-    private Long tagId;
+    Long tagId;
 }
