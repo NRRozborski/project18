@@ -10,10 +10,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -37,6 +34,16 @@ public class AuthController {
                         authentication.getName());
 
         return authentication.getName() + authentication.getPrincipal().getAttribute("email");
+    }
+
+    @GetMapping("/callback")
+    public String callback(@RequestParam("code") String code) {
+//        OAuth2AuthorizedClient client = authorizedClientService
+//                .loadAuthorizedClient(
+//                        authentication.getAuthorizedClientRegistrationId(),
+//                        authentication.getName());
+
+        return code;
     }
 
 }

@@ -30,15 +30,18 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/").permitAll()
-//                        .requestMatchers("/category/all").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/auth/callback").permitAll()
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .userDetailsService(userDetailsService())
 //                .sessionManagement(session ->  session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(customizer -> customizer
-                        .defaultSuccessUrl("/auth/login-success", true))
+                .oauth2Login(Customizer.withDefaults()
+//                        config -> config.baseUri("/auth/callback"))
+//                        .defaultSuccessUrl("/auth/login-success", true)
+                )
                 .formLogin(Customizer.withDefaults())
                 .build();
     }
