@@ -16,7 +16,7 @@ import java.util.Locale;
 @Slf4j
 public class SampleDataPostConstruct {
     private final UserRepository userRepository;
-    private final Faker faker = new Faker(new Locale("es", "ES"));
+    private final Faker faker = new Faker(new Locale("es"));
     @Autowired
     public SampleDataPostConstruct(UserRepository userRepository) {
         this.userRepository = userRepository;
