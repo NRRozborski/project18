@@ -1,6 +1,6 @@
 package com.laguna.project18.WallapopGratuito.model;
 
-import com.vastik.spring.data.faker.annotation.FakeFaker;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,6 +5,8 @@ import com.laguna.project18.WallapopGratuito.dto.CategoryResponseDTO;
 import com.laguna.project18.WallapopGratuito.model.Category;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CategoryMapper {
     public CategoryResponseDTO toResponse(Category category){
@@ -15,9 +17,13 @@ public class CategoryMapper {
         );
     }
 
+    public List<CategoryResponseDTO> toResponse(List<Category> categories){
+        return categories.stream().map(this::toResponse).toList();
+    }
+
     public Category toModel(CategoryRequestDTO categoryRequestDTO){
         return new Category(
-                0L,
+                null,
                 categoryRequestDTO.getName(),
                 categoryRequestDTO.getDescription(),
                 null
