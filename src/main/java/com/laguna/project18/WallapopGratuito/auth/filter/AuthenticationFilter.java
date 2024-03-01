@@ -23,22 +23,22 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        Authentication authentication =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
-
-        OAuth2AuthenticationToken oauthToken =
-                (OAuth2AuthenticationToken) authentication;
-
-        OAuth2AuthorizedClient client =
-                clientService.loadAuthorizedClient(
-                        oauthToken.getAuthorizedClientRegistrationId(),
-                        oauthToken.getName());
-
-        String accessToken = client.getAccessToken().getTokenValue();
-            logger.info(accessToken);
-            logger.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//        Authentication authentication =
+//                SecurityContextHolder
+//                        .getContext()
+//                        .getAuthentication();
+//
+//        OAuth2AuthenticationToken oauthToken =
+//                (OAuth2AuthenticationToken) authentication;
+//
+//        OAuth2AuthorizedClient client =
+//                clientService.loadAuthorizedClient(
+//                        oauthToken.getAuthorizedClientRegistrationId(),
+//                        oauthToken.getName());
+//
+//        String accessToken = client.getAccessToken().getTokenValue();
+//            logger.info(accessToken);
+//            logger.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             filterChain.doFilter(request, response);
     }
 }

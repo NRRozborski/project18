@@ -3,16 +3,24 @@ package com.laguna.project18.WallapopGratuito.auth.controller;
 import com.laguna.project18.WallapopGratuito.auth.dto.LoginRequestDTO;
 import com.laguna.project18.WallapopGratuito.auth.dto.TokenDTO;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.misc.MultiMap;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,6 +28,10 @@ import java.security.Principal;
 public class AuthController {
 
     private final OAuth2AuthorizedClientService authorizedClientService;
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String googleClientId;
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private String googleClientSecret;
 
     @RequestMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody LoginRequestDTO loginRequestDto){
@@ -43,7 +55,55 @@ public class AuthController {
 //                        authentication.getAuthorizedClientRegistrationId(),
 //                        authentication.getName());
 
+        RestClient restClient = RestClient.create();
+//
+//        RestClient customClient = RestClient.builder()
+//                .requestFactory(new HttpComponentsClientHttpRequestFactory())
+//                .baseUrl("https://marca.com")
+//                .defaultUriVariables(Map.of("variable", "foo"))
+//                .defaultHeader("My-Header", "Foo")
+//                .requestInterceptor(myCustomInterceptor)
+//                .requestInitializer(myCustomInitializer)
+//                .build();
+//        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+//        headers.add("client_id", googleClientId);
+//        headers.add("client_secret", googleClientSecret);
+//        headers.add("grant_type", code);
+//        headers.add("redirect_uri", "/auth/token");
+//        headers.add("response_type", "code");
+//        headers.add("access_type", "offline");
+
+
+
+        ResponseEntity<String> result = restClient.post()
+                .uri("https://oauth2.googleapis.com/token?" +
+                                "client_id={googleClientId}&" +
+//                                "response_type=code&" +
+                                "client_secret={googleClientSecret}&" +
+                                "redirect_uri=http://localhost:8080/auth/callback&" +
+                                "grant_type=authorization_code&" +
+//                                "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&" +
+                                "code={code}",
+                        googleClientId, googleClientSecret, code
+
+                        )
+//                .headers(httpHeaders -> httpHeaders
+//                        .addAll(headers)
+//                )
+                .retrieve()
+                .toEntity(String.class);
+
+        System.out.println("Response status: " + result.getStatusCode());
+        System.out.println("Response headers: " + result.getHeaders());
+        System.out.println("Contents: " + result.getBody());
+
         return code;
+    }
+
+    @PostMapping
+    public String getTokenFromAuthorizationCode(@RequestParam("access_token") String accessToken){
+        System.out.println(accessToken);
+        return accessToken;
     }
 
 }
