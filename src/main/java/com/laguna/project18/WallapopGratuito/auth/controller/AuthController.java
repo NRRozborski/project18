@@ -1,20 +1,15 @@
 package com.laguna.project18.WallapopGratuito.auth.controller;
 
 import com.laguna.project18.WallapopGratuito.auth.dto.LoginRequestDTO;
-import com.laguna.project18.WallapopGratuito.auth.dto.OAuthDTO;
+import com.laguna.project18.WallapopGratuito.auth.dto.OAuthTokenDTO;
+import com.laguna.project18.WallapopGratuito.auth.dto.OAuthUserDTO;
 import com.laguna.project18.WallapopGratuito.auth.dto.TokenDTO;
 import com.laguna.project18.WallapopGratuito.auth.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RestController
 @RequestMapping("/auth")
@@ -46,32 +41,30 @@ public class AuthController {
     @GetMapping("/callback")
     public String callback(@RequestParam("code") String code) {
 
-//        OAuthDTO oAuthDTO = new OAuthDTO();
-
         RestClient restClient = RestClient.create();
-        ResponseEntity<String> result = restClient.post()
+        ResponseEntity<OAuthTokenDTO> tokenResponse = restClient.post()
                 .uri("https://oauth2.googleapis.com/token?" +
                                 "client_id={googleClientId}&" +
-//                                "response_type=code&" +
                                 "client_secret={googleClientSecret}&" +
                                 "redirect_uri=http://localhost:8080/auth/callback&" +
                                 "grant_type=authorization_code&" +
 //                                "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&" +
                                 "code={code}",
                         googleClientId, googleClientSecret, code
-
                         )
 //                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                //TODO: Pasar a distinta entidad para recoger token
-                .toEntity(String.class);
+                .toEntity(OAuthTokenDTO.class);
 
+        String accessToken = tokenResponse.getBody().getAccess_token();
 
-//        System.out.println("Response status: " + result.getStatusCode());
-//        System.out.println("Response headers: " + result.getHeaders());
-//        System.out.println("Contents: " + result.getBody());
+        ResponseEntity<OAuthUserDTO> userInfo = restClient.get()
+                .uri("https://www.googleapis.com/oauth2/v1/userinfo")
+                .header("Authorization", "Bearer "+ accessToken)
+                .retrieve().
+                toEntity(OAuthUserDTO.class);
 
-        return result.getBody();
+        return userInfo.getBody().toString();
     }
 
 //    @PostMapping

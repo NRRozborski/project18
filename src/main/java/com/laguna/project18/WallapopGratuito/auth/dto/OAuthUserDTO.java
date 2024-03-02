@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OAuthDTO {
-    private Long id;
+public class OAuthUserDTO {
+//    private Long id;
     private Boolean verified_email;
     private String name;
     private String email;

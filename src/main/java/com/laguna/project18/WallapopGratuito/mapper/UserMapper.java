@@ -1,6 +1,6 @@
 package com.laguna.project18.WallapopGratuito.mapper;
 
-import com.laguna.project18.WallapopGratuito.auth.dto.OAuthDTO;
+import com.laguna.project18.WallapopGratuito.auth.dto.OAuthUserDTO;
 import com.laguna.project18.WallapopGratuito.dto.UserRequestDTO;
 import com.laguna.project18.WallapopGratuito.dto.UserResponseDTO;
 import com.laguna.project18.WallapopGratuito.model.User;
@@ -16,13 +16,13 @@ public class UserMapper {
         );
     }
 
-    public User toModel(OAuthDTO oAuthDTO){
+    public User toModel(OAuthUserDTO oAuthUserDTO){
         return new User(
                 0L,
                 null,
-                oAuthDTO.getEmail(),
-                oAuthDTO.getGiven_name(),
-                oAuthDTO.getFamily_name(),
+                oAuthUserDTO.getEmail(),
+                oAuthUserDTO.getGiven_name(),
+                oAuthUserDTO.getFamily_name(),
                 null,
                 0,
                 null,
