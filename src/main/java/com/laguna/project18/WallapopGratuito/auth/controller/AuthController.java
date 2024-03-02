@@ -1,33 +1,28 @@
 package com.laguna.project18.WallapopGratuito.auth.controller;
 
 import com.laguna.project18.WallapopGratuito.auth.dto.LoginRequestDTO;
+import com.laguna.project18.WallapopGratuito.auth.dto.OAuthDTO;
 import com.laguna.project18.WallapopGratuito.auth.dto.TokenDTO;
+import com.laguna.project18.WallapopGratuito.auth.service.OAuthService;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.misc.MultiMap;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final OAuth2AuthorizedClientService authorizedClientService;
+//    private final OAuth2AuthorizedClientService authorizedClientService;
+    private final OAuthService oAuthService;
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClientId;
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
@@ -38,43 +33,22 @@ public class AuthController {
         return null;
     }
 
-    @GetMapping("/login-success")
-    public String getLoginInfo(OAuth2AuthenticationToken authentication) {
-        OAuth2AuthorizedClient client = authorizedClientService
-                .loadAuthorizedClient(
-                        authentication.getAuthorizedClientRegistrationId(),
-                        authentication.getName());
-
-        return authentication.getName() + authentication.getPrincipal().getAttribute("email");
-    }
-
-    @GetMapping("/callback")
-    public String callback(@RequestParam("code") String code) {
+//    @GetMapping("/login-success")
+//    public String getLoginInfo(OAuth2AuthenticationToken authentication) {
 //        OAuth2AuthorizedClient client = authorizedClientService
 //                .loadAuthorizedClient(
 //                        authentication.getAuthorizedClientRegistrationId(),
 //                        authentication.getName());
+//
+//        return authentication.getName() + authentication.getPrincipal().getAttribute("email");
+//    }
+
+    @GetMapping("/callback")
+    public String callback(@RequestParam("code") String code) {
+
+//        OAuthDTO oAuthDTO = new OAuthDTO();
 
         RestClient restClient = RestClient.create();
-//
-//        RestClient customClient = RestClient.builder()
-//                .requestFactory(new HttpComponentsClientHttpRequestFactory())
-//                .baseUrl("https://marca.com")
-//                .defaultUriVariables(Map.of("variable", "foo"))
-//                .defaultHeader("My-Header", "Foo")
-//                .requestInterceptor(myCustomInterceptor)
-//                .requestInitializer(myCustomInitializer)
-//                .build();
-//        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-//        headers.add("client_id", googleClientId);
-//        headers.add("client_secret", googleClientSecret);
-//        headers.add("grant_type", code);
-//        headers.add("redirect_uri", "/auth/token");
-//        headers.add("response_type", "code");
-//        headers.add("access_type", "offline");
-
-
-
         ResponseEntity<String> result = restClient.post()
                 .uri("https://oauth2.googleapis.com/token?" +
                                 "client_id={googleClientId}&" +
@@ -87,23 +61,23 @@ public class AuthController {
                         googleClientId, googleClientSecret, code
 
                         )
-//                .headers(httpHeaders -> httpHeaders
-//                        .addAll(headers)
-//                )
+//                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
+                //TODO: Pasar a distinta entidad para recoger token
                 .toEntity(String.class);
 
-        System.out.println("Response status: " + result.getStatusCode());
-        System.out.println("Response headers: " + result.getHeaders());
-        System.out.println("Contents: " + result.getBody());
 
-        return code;
+//        System.out.println("Response status: " + result.getStatusCode());
+//        System.out.println("Response headers: " + result.getHeaders());
+//        System.out.println("Contents: " + result.getBody());
+
+        return result.getBody();
     }
 
-    @PostMapping
-    public String getTokenFromAuthorizationCode(@RequestParam("access_token") String accessToken){
-        System.out.println(accessToken);
-        return accessToken;
-    }
+//    @PostMapping
+//    public String getTokenFromAuthorizationCode(@RequestParam("access_token") String accessToken){
+//        System.out.println(accessToken);
+//        return accessToken;
+//    }
 
 }

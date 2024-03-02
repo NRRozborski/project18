@@ -48,6 +48,8 @@ public class SampleDataPostConstruct {
                         Long.getLong(faker.numerify("####")),
                         faker.name().username(),
                         faker.bothify("????##@gmail.com"),
+                        null,
+                        null,
                         BCrypt.hashpw(faker.bothify("????##????##????##"), BCrypt.gensalt()),
                         in,
                         null,
