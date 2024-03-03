@@ -1,5 +1,6 @@
 package com.laguna.project18.WallapopGratuito.service;
 
+import com.laguna.project18.WallapopGratuito.auth.dto.OAuthUserDTO;
 import com.laguna.project18.WallapopGratuito.dto.UserRequestDTO;
 import com.laguna.project18.WallapopGratuito.dto.UserResponseDTO;
 import com.laguna.project18.WallapopGratuito.mapper.UserMapper;
@@ -20,5 +21,15 @@ public class UserService {
                 userMapper.toModel(userRequestDTO)
         );
         return userMapper.toResponse(user);
+    }
+
+    public UserResponseDTO createUser(OAuthUserDTO oAuthUserDTO){
+        return userMapper.toResponse(
+                userRepository.save(userMapper.toModel(oAuthUserDTO))
+        );
+    }
+
+    public Boolean userExistsByEmail(String email){
+        return userRepository.existsByEmail(email);
     }
 }
