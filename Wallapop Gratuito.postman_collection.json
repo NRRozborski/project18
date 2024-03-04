@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "e9d016fa-bf0c-43be-9ea1-9395948d80fb",
+		"name": "Wallapop Gratuito",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24526715"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJXYWxsYXBvcEdyYXR1aXRvIiwic3ViIjoiYXNkYW50ZTcxQGdtYWlsLmNvbSIsImlhdCI6MTcwOTUxNTYyNiwiZXhwIjoxNzA5NTE1OTI2fQ.N6pfta5wTO6iOd1ZcjzG9ahtN_BlUHq6NY9WpxliHkuolxGnoyQvTZ5EyBxXveTc5tc-uYpuIkOnCGHgvtdeew",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/category/all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "ya29.a0AfB_byAOSSF76nF4kXZtpe4XgQCGYsiBUls3YZ8OSjNgqANtKYSEam1EwwjQfTNsJaZiK2yMYlRnXZf2O2aWIc2jSUrz4CIYOT9_bX8NsTQ7wO9Lwu82alovMukf5s1RvE-ulfOQrQFJ-pG608nZgOiq6waogJaw18XbaCgYKAaQSARASFQHGX2MiASsTGKvJcrU3TvT8eqnmxw0171",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/category/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{admin_credentials}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Oauth2 Google",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "useBrowser",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "{{url}}/callback",
+									"type": "string"
+								},
+								{
+									"key": "scope",
+									"value": "email",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://accounts.google.com/o/oauth2/v2/auth",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://oauth2.googleapis.com/token",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "356409629120-qq0llgq2jackakh65p5n2e5qsq18kt30.apps.googleusercontent.com",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/category/all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "ya29.a0AfB_byA95qR9J7fCCPOK9AZdZLJZ4PPnAumqcrXXW-OP57mnFisXpHJpdmh9vrUGRiuwOz_Vy3VEr7mCYqRijp6K5ITvgyjtm-KxiXKduZ5WJAlWxT2S2DhjkgG6irHCSQuLsgZ0vtK0Mn2TdqctTT1jP20FgT4IbQaCgYKAWcSARASFQHGX2Miov7dmZCJsSDlnJWvcdMi5w0169",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://www.googleapis.com/oauth2/v1/userinfo",
+							"protocol": "https",
+							"host": [
+								"www",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"oauth2",
+								"v1",
+								"userinfo"
+							],
+							"query": [
+								{
+									"key": "scope",
+									"value": "https://www.googleapis.com/auth/userinfo.email",
+									"disabled": true
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:8080/callback",
+									"disabled": true
+								},
+								{
+									"key": "state",
+									"value": "pass-through value",
+									"disabled": true
+								},
+								{
+									"key": "client_id",
+									"value": "356409629120-qq0llgq2jackakh65p5n2e5qsq18kt30.apps.googleusercontent.com",
+									"disabled": true
+								},
+								{
+									"key": "include_granted_scopes",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "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",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.github+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR-TOKEN>",
+								"disabled": true
+							},
+							{
+								"key": "X-GitHub-Api-Version",
+								"value": "2022-11-28"
+							}
+						],
+						"url": {
+							"raw": "https://api.github.com/user",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "admin_credentials",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
