@@ -3,24 +3,33 @@ package com.laguna.project18.WallapopGratuito.auth.service;
 
 import com.laguna.project18.WallapopGratuito.auth.dto.OAuthTokenDTO;
 import com.laguna.project18.WallapopGratuito.auth.dto.OAuthUserDTO;
+import com.laguna.project18.WallapopGratuito.auth.dto.TokenDTO;
 import com.laguna.project18.WallapopGratuito.dto.UserResponseDTO;
 import com.laguna.project18.WallapopGratuito.service.UserService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class OAuthService {
 
     private final UserService userService;
-    private RestClient restClient = RestClient.create();
+    private final RestClient restClient = RestClient.create();
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    private String googleClientId;
+    private String GOOGLE_CLIENT_ID;
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
-    private String googleClientSecret;
+    private String GOOGLE_CLIENT_SECRET;
+    @Value("${token.expiration-time}")
+    private Long TOKEN_EXPIRATION_TIME;
+    @Value("${token.secret}")
+    private String SECRET;
 
     public OAuthTokenDTO getAccessToken(String authorizationCode){
         ResponseEntity<OAuthTokenDTO> tokenResponse = restClient.post()
@@ -31,7 +40,7 @@ public class OAuthService {
                                 "grant_type=authorization_code&" +
 //                                "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&" +
                                 "code={authorizationCode}",
-                        googleClientId, googleClientSecret, authorizationCode
+                        GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, authorizationCode
                 )
                 .retrieve()
                 .toEntity(OAuthTokenDTO.class);
@@ -55,6 +64,23 @@ public class OAuthService {
 
     public UserResponseDTO createUser(OAuthUserDTO oAuthUserDTO){
         return userService.createUser(oAuthUserDTO);
+    }
+
+    public TokenDTO genetateToken(String email) {
+
+        String token = Jwts.builder()
+                .id("WallapopGratuito")
+                .subject(email)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME))
+                .signWith(Keys.hmacShaKeyFor(SECRET.getBytes()))
+                .compact();
+
+        return new TokenDTO(
+                token,
+                null,
+                "Bearer"
+        );
     }
 
 }
